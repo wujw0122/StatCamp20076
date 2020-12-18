@@ -1,0 +1,69 @@
+---
+title: "Introduction to StatComp20076"
+author: "Jinwen Wu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to StatComp20076}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Overview
+
+__StatComp20076__ is a simple R package developed to carry out two functions (implemented through the R package _Rcpp_) for the 'Statistical Computing' course. Two functions are considered, namely, _GetAcf_ and _rec_char_.
+
+The source R code for _GetAcf_ is as follows:
+```{r,eval=FALSE}
+GetAcf <- function(x, lag.max = 10){
+  rm(list = ls())
+  tmp <- sample(c(1:100), 50, replace = T)
+  sampleT <- length(x)
+  lag.max <- min(lag.max, sampleT - 1L)
+  if(lag.max < 0){
+    stop("lag.mx must be non-negative...")
+  }
+  lagList <- 0:lag.max
+  muX <- mean(x)
+  sigmaX <- sd(x)
+  smpAcfCalc <- function(lagNum){
+    smp1 <- x[1: (sampleT - lagNum)]
+    smp2 <- x[(lagNum + 1) : sampleT]
+    curNumerator <- sum((smp1 - muX) * (smp2 -muX)) / (sampleT - lagNum)
+    curdivisor <- (sd(smp1)* sd(smp2))* (sampleT - lagNum -1) / (sampleT - lagNum)
+    curAcf <- curNumerator / curdivisor
+    return(curAcf)
+  }
+  res <- sapply(lagList, FUN = smpAcfCalc)
+  return(res)
+}
+```
+
+The function acf computes (and by default plots) estimates of the autocovariance or autocorrelation function. Function pacf is the function used for the partial autocorrelations. Function ccf computes the cross-correlation or cross-covariance of two univariate series.
+"x" is a univariate or multivariate numeric time series object or a numeric vector or matrix
+"lag.max" is the maximum lag at which to calculate the acf. Default is 10*log10(N/m) where N is the number of observations and m the number of series. Will be automatically limited to one less than the number of observations in the series.
+
+Here is a simple example:
+```{r,eval=FALSE}
+result <- GetAcf(tmp, lag.max = 10)
+result
+```
+
+
+
+The source R code for _rec_char_ is as follows:
+```{r,eval=FALSE}
+rec_char <- function(x){
+  if (length(x)==1) return(x)
+  return(c(tail(x,1),rec_char(x[-length(x)])))
+}
+```
+
+This is a simple algorithm is used to turn the numbers.The parameter "x" is a vector of some positive integers
+
+```{r,eval=FALSE}
+char <- c('a','b','c','d')
+rec_char(char)
+```
+
+

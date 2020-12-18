@@ -1,0 +1,17 @@
+Package: StatComp20076
+Type: Package
+Title: The final project
+Version: 1.0
+Date: 2020-12-15
+Author: Jinwen Wu
+Maintainer: Jinwen Wu <1292102295@qq.com>
+Description: The final project.
+License: GPL (>= 2)
+Imports: Rcpp (>= 1.0.5),Ball,DAAG,MASS,RANN,boot,bootstrap,energy,xtable,RcppArmadillo,microbenchmark
+LinkingTo: Rcpp
+RoxygenNote: 7.1.1
+Suggests: knitr, rmarkdown
+Encoding: UTF-8
+VignetteBuilder: knitr
+URL: http://github.com/wujw0122/StatComp20076
+BugReports: http://github.com/wujw0122/StatComp20076/issues
